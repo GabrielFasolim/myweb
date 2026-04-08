@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "logo": "GF",
+    "work": "WORK",
+    "about": "ABOUT",
+    "contact": "CONTACT",
+    "resume": "RESUME"
+  },
+  "hero": {
+    "name": "GABRIEL FASOLIM",
+    "subtitle": "Mid-Level Full-Stack Developer · Fintech & Blockchain",
+    "description": "Architecting high-criticality financial systems with a focus on structural integrity and performance. I bridge the gap between complex backend logic and seamless frontend experiences.",
+    "scroll": "Scroll to explore"
+  },
+  "editorial": {
+    "words": ["FINTECH", "BLOCKCHAIN", "INTERNET OF THINGS"]
+  },
+  "stats": {
+    "items": [
+      { "value": "3+ Years",    "label": "Experience" },
+      { "value": "4 Companies", "label": "Global Reach" },
+      { "value": "2x Award",    "label": "PUCPR Winner" },
+      { "value": "Best TCC",    "label": "Recognition" },
+      { "value": "Honors",      "label": "Graduate" }
+    ]
+  },
+  "experience": {
+    "eyebrow": "CURRICULUM",
+    "title": "EXPERIENCE",
+    "jobs": [
+      {
+        "period": "2023 — PRESENT",
+        "company": "Quantum Tech Ventures",
+        "role": "Senior Full-Stack Engineer",
+        "description": "Leading the development of high-throughput trading platforms. Implementing microservices architecture for real-time order matching and portfolio management."
+      },
+      {
+        "period": "2021 — 2023",
+        "company": "Radioenge",
+        "role": "Junior Developer / Intern",
+        "description": "Engineered IoT gateway interfaces and real-time monitoring dashboards. Streamlined sensor data ingestion pipelines using NestJS and MQTT."
+      },
+      {
+        "period": "2020 — 2021",
+        "company": "Hardness Sistemas",
+        "role": "Full-Stack Developer",
+        "description": "Contributed to the development of enterprise resource planning tools, focusing on financial modules and reporting systems using .NET/C#."
+      }
+    ]
+  },
+  "whyme": {
+    "title": "WHY WORK WITH ME",
+    "items": [
+      {
+        "title": "Systems Thinking",
+        "body": "I don't just write code; I design systems. I consider how every component interacts within the larger architecture to ensure scalability and maintainability."
+      },
+      {
+        "title": "Financial Domain Knowledge",
+        "body": "Deep understanding of ledger systems, transaction integrity, and compliance requirements in the Fintech sector."
+      },
+      {
+        "title": "Delivery Focus",
+        "body": "Proven track record of meeting critical deadlines in high-pressure environments while maintaining code quality and system stability."
+      },
+      {
+        "title": "Full Ownership",
+        "body": "Taking responsibility for the entire lifecycle of a feature—from initial requirement gathering to deployment and post-launch monitoring."
+      }
+    ]
+  },
+  "skills": {
+    "categories": [
+      {
+        "title": "FRONTEND",
+        "items": ["Vue.js", "React", "Angular", "Tailwind CSS", "TypeScript"]
+      },
+      {
+        "title": "BACKEND",
+        "items": ["NestJS", ".NET / C#", "Node.js", "GraphQL"]
+      },
+      {
+        "title": "INFRA & OPS",
+        "items": ["PostgreSQL", "Docker", "Git", "AWS"]
+      }
+    ]
+  },
+  "achievements": {
+    "title": "ACHIEVEMENTS",
+    "items": [
+      {
+        "title": "Academic Honors & Best TCC",
+        "body": "Awarded for exceptional performance and the most outstanding final graduation project at PUCPR."
+      },
+      {
+        "title": "ICHILD",
+        "body": "Architected the core system for a child welfare monitoring platform during a dedicated hackathon."
+      },
+      {
+        "title": "Agenda Hub",
+        "body": "Developed a comprehensive scheduling engine used by multiple business units within an educational ecosystem."
+      },
+      {
+        "title": "Teaching Assistant",
+        "body": "Mentored junior students in Algorithms and Data Structures, fostering a culture of technical excellence."
+      }
+    ]
+  },
+  "education": {
+    "title": "ACADEMIC PATH",
+    "entries": [
+      {
+        "school": "FAE Business School",
+        "degree": "Postgrad in Financial Markets",
+        "location": "CURITIBA, BR"
+      },
+      {
+        "school": "PUCPR",
+        "degree": "Bachelor's in Information Systems",
+        "location": "CURITIBA, BR"
+      }
+    ]
+  },
+  "footer": {
+    "name": "GABRIEL FASOLIM",
+    "copy": "© 2024 ARCHITECTURAL MONOLITH. ALL RIGHTS RESERVED.",
+    "links": [
+      { "label": "EMAIL",    "href": "mailto:contact@fasolim.dev" },
+      { "label": "PHONE",    "href": "#" },
+      { "label": "LOCATION", "href": "#" },
+      { "label": "LINKEDIN", "href": "#" },
+      { "label": "GITHUB",   "href": "#" }
+    ]
+  }
+}

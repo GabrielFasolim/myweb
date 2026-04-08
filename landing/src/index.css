@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ── Colors ── */
+  --color-primary:                    #ffffff;
+  --color-on-primary:                 #1b1c18;
+  --color-primary-container:          #d6d4ce;
+  --color-on-primary-container:       #000000;
+  --color-primary-fixed:              #5f5f5a;
+  --color-primary-fixed-dim:          #474743;
+  --color-on-primary-fixed:           #ffffff;
+  --color-on-primary-fixed-variant:   #e4e2dc;
+  --color-inverse-primary:            #5f5f5a;
+
+  --color-secondary:                  #c8c6c5;
+  --color-on-secondary:               #1b1c1c;
+  --color-secondary-container:        #474746;
+  --color-on-secondary-container:     #e4e2e1;
+  --color-secondary-fixed:            #c8c6c5;
+  --color-secondary-fixed-dim:        #adabaa;
+  --color-on-secondary-fixed:         #1b1c1c;
+  --color-on-secondary-fixed-variant: #3c3b3b;
+
+  --color-tertiary:                   #e4e2dc;
+  --color-on-tertiary:                #1b1c18;
+  --color-tertiary-container:         #92918c;
+  --color-on-tertiary-container:      #000000;
+  --color-tertiary-fixed:             #5f5f5a;
+  --color-tertiary-fixed-dim:         #474743;
+  --color-on-tertiary-fixed:          #ffffff;
+  --color-on-tertiary-fixed-variant:  #e4e2dc;
+
+  --color-background:                 #050505;
+  --color-on-background:              #e5e2e1;
+  --color-surface:                    #131313;
+  --color-on-surface:                 #e5e2e1;
+  --color-surface-variant:            #353534;
+  --color-on-surface-variant:         #c6c6c6;
+  --color-surface-dim:                #131313;
+  --color-surface-bright:             #3a3939;
+  --color-surface-container-lowest:   #0e0e0e;
+  --color-surface-container-low:      #1c1b1b;
+  --color-surface-container:          #201f1f;
+  --color-surface-container-high:     #2a2a2a;
+  --color-surface-container-highest:  #353534;
+  --color-surface-tint:               #c8c6c1;
+  --color-inverse-surface:            #e5e2e1;
+  --color-inverse-on-surface:         #313030;
+
+  --color-outline:                    #919191;
+  --color-outline-variant:            #474747;
+
+  --color-error:                      #ffb4ab;
+  --color-on-error:                   #690005;
+  --color-error-container:            #93000a;
+  --color-on-error-container:         #ffdad6;
+
+  /* ── Typography ── */
+  --font-headline: "Epilogue", sans-serif;
+  --font-body:     "Manrope", sans-serif;
+  --font-label:    "Space Grotesk", sans-serif;
+
+  /* ── Border Radius — Architectural (0px) ── */
+  --radius:     0rem;
+  --radius-sm:  0rem;
+  --radius-md:  0rem;
+  --radius-lg:  0rem;
+  --radius-xl:  0rem;
+  --radius-2xl: 0rem;
+  --radius-3xl: 0rem;
+  --radius-full: 9999px;
+}
+
+body {
+  background-color: #050505;
+  color: #e8e6e0;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Manrope", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.bleed-text {
+  font-size: clamp(5rem, 15vw, 12rem);
+  line-height: 1;
+}
+
+/* ── Marquee (Editorial carousel) ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 70s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── Smooth scroll ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Custom cursor ── */
+@media (hover: hover) {
+  body,
+  a,
+  button,
+  summary,
+  [role="button"] {
+    cursor: none;
+  }
+}
+
+.cursor {
+  display: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: left, top;
+}
+
+@media (hover: hover) {
+  .cursor { display: block; }
+}
+
+.cursor.hovering {
+  width: 36px;
+  height: 36px;
+}
+
+/* ── Keyframes ── */
+@keyframes slideUp {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes maskReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes drawLine {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* ── Hero: split-text reveal ── */
+.char-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.char {
+  display: inline-block;
+  animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Hero: subtitle / bio fade ── */
+.fade-up-hero {
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Scroll-triggered fade-up ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.fade-up.visible {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Editorial mask reveal ── */
+.mask-reveal {
+  clip-path: inset(0 100% 0 0);
+}
+
+.mask-reveal.visible {
+  animation: maskReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Experience timeline line ── */
+.timeline-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(71, 71, 71, 0.5);
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
+.timeline-line.visible {
+  animation: drawLine 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
