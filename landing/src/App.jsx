@@ -3,6 +3,75 @@
    Design System: "The Architectural Monolith"
    ───────────────────────────────────────────── */
 
+import { useEffect, useRef, useState } from 'react'
+
+/* ── useInView — fires once when element enters viewport ── */
+function useInView(options = {}) {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.15, ...options }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return [ref, inView]
+}
+
+/* ── Custom Cursor ── */
+function CustomCursor() {
+  const ref = useRef(null)
+  const [hovering, setHovering] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    const onMove = (e) => {
+      el.style.left = e.clientX + 'px'
+      el.style.top  = e.clientY + 'px'
+    }
+    const onOver = (e) => {
+      if (e.target.closest('a, button, [role="button"]')) setHovering(true)
+    }
+    const onOut = () => setHovering(false)
+
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseover', onOver)
+    window.addEventListener('mouseout', onOut)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseover', onOver)
+      window.removeEventListener('mouseout', onOut)
+    }
+  }, [])
+
+  return <div ref={ref} className={`cursor${hovering ? ' hovering' : ''}`} />
+}
+
+/* ── SplitText — letter-by-letter slideUp reveal ── */
+function SplitText({ text }) {
+  return (
+    <span aria-label={text}>
+      {text.split('').map((char, i) => (
+        <span key={i} className="char-wrap" aria-hidden="true">
+          <span className="char" style={{ animationDelay: `${i * 0.038}s` }}>
+            {char === ' ' ? '\u00A0' : char}
+          </span>
+        </span>
+      ))}
+    </span>
+  )
+}
+
+/* ── Nav ── */
 function Nav() {
   return (
     <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-8 bg-[#050505] mix-blend-difference">
@@ -41,18 +110,30 @@ function Nav() {
   )
 }
 
+/* ── Hero ── */
 function Hero() {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center px-6 text-center pt-24 pb-12">
-      <h1 className="font-headline font-extrabold text-5xl md:text-8xl lg:text-9xl tracking-[0.1em] text-primary mb-8 uppercase">
-        GABRIEL FASOLIM
+      <h1 className="font-headline font-extrabold text-5xl md:text-8xl lg:text-9xl tracking-[0.1em] text-primary mb-5 mt-10 uppercase leading-[0.95]">
+        <span className="block">
+          <SplitText text="GABRIEL" />
+        </span>
+        <span className="block">
+          <SplitText text="FASOLIM" />
+        </span>
       </h1>
 
-      <p className="font-label text-xs md:text-sm uppercase tracking-[0.3em] text-on-surface-variant mb-12">
+      <p
+        className="font-label text-xs md:text-sm uppercase tracking-[0.3em] text-on-surface-variant mb-12 fade-up-hero"
+        style={{ animationDelay: '0.8s' }}
+      >
         Mid-Level Full-Stack Developer · Fintech &amp; Blockchain
       </p>
 
-      <div className="max-w-2xl mx-auto">
+      <div
+        className="max-w-2xl mx-auto fade-up-hero"
+        style={{ animationDelay: '1s' }}
+      >
         <p className="text-lg md:text-xl text-on-surface leading-relaxed font-body">
           Architecting high-criticality financial systems with a focus on
           structural integrity and performance. I bridge the gap between complex
@@ -72,14 +153,44 @@ function Hero() {
   )
 }
 
+/* ── Editorial word with fade-in + lateral parallax ── */
+function EditorialWord({ text, align, delay = 0 }) {
+  const [ref, inView] = useInView({ threshold: 0 })
+  const [offset, setOffset] = useState(0)
+
+  useEffect(() => {
+    const dir = align === 'left' ? -1 : 1
+    const onScroll = () => setOffset(window.scrollY * 0.025 * dir)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [align])
+
+  return (
+    <h2
+      ref={ref}
+      className={[
+        'bleed-text font-headline font-extrabold tracking-tighter',
+        'text-surface-container-highest/20 whitespace-nowrap',
+        align === 'left' ? '-ml-20' : '-mr-20 text-right',
+      ].join(' ')}
+      style={{
+        transform: `translateX(${offset}px)`,
+        opacity: inView ? 1 : 0,
+        transition: `opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+      }}
+    >
+      {text}
+    </h2>
+  )
+}
+
+/* ── Editorial ── */
 function Editorial() {
   return (
     <section className="py-32 overflow-hidden">
       {/* FINTECH */}
       <div className="relative mb-40">
-        <h2 className="bleed-text font-headline font-extrabold tracking-tighter text-surface-container-highest/20 whitespace-nowrap -ml-20">
-          FINTECH
-        </h2>
+        <EditorialWord text="FINTECH" align="left" />
         <div className="max-w-md ml-auto mr-12 -mt-12 md:-mt-24 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
             Designing transaction systems where latency and precision are
@@ -90,9 +201,7 @@ function Editorial() {
 
       {/* BLOCKCHAIN */}
       <div className="relative mb-40">
-        <h2 className="bleed-text font-headline font-extrabold tracking-tighter text-surface-container-highest/20 whitespace-nowrap text-right -mr-20">
-          BLOCKCHAIN
-        </h2>
+        <EditorialWord text="BLOCKCHAIN" align="right" delay={0.1} />
         <div className="max-w-md mr-auto ml-12 -mt-12 md:-mt-24 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
             Smart contract integration and decentralized architecture.
@@ -103,9 +212,7 @@ function Editorial() {
 
       {/* IOT */}
       <div className="relative">
-        <h2 className="bleed-text font-headline font-extrabold tracking-tighter text-surface-container-highest/20 whitespace-nowrap -ml-20">
-          INTERNET OF THINGS
-        </h2>
+        <EditorialWord text="INTERNET OF THINGS" align="left" delay={0.1} />
         <div className="max-w-md ml-auto mr-12 -mt-12 md:-mt-24 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
             Connecting the physical and digital worlds through robust real-time
@@ -117,22 +224,32 @@ function Editorial() {
   )
 }
 
+/* ── Stats ── */
 function Stats() {
   const items = [
-    { value: '4+ Years',  label: 'Experience' },
+    { value: '4+ Years',    label: 'Experience' },
     { value: '4 Companies', label: 'Global Reach' },
-    { value: '3x Award',  label: 'PUCPR Winner' },
-    { value: 'Best TCC',  label: 'Recognition' },
-    { value: 'Honors',    label: 'Graduate' },
+    { value: '3x Award',    label: 'PUCPR Winner' },
+    { value: 'Best TCC',    label: 'Recognition' },
+    { value: 'Honors',      label: 'Graduate' },
   ]
+  const [ref, inView] = useInView()
 
   return (
     <section className="py-24 border-y border-outline-variant/10 bg-surface-container-lowest/50">
-      <div className="max-w-screen-xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-12 text-center">
+      <div
+        ref={ref}
+        className="max-w-screen-xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-12 text-center"
+      >
         {items.map(({ value, label }, i) => (
           <div
             key={label}
-            className={`flex flex-col gap-2${i === 4 ? ' col-span-2 md:col-span-1' : ''}`}
+            className={[
+              'flex flex-col gap-2 fade-up',
+              inView ? 'visible' : '',
+              i === 4 ? 'col-span-2 md:col-span-1' : '',
+            ].join(' ')}
+            style={{ animationDelay: `${i * 0.1}s` }}
           >
             <span className="font-headline text-3xl font-bold">{value}</span>
             <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
@@ -145,6 +262,32 @@ function Stats() {
   )
 }
 
+/* ── Experience — single job row with its own observer ── */
+function JobItem({ period, company, role, description, delay }) {
+  const [ref, inView] = useInView()
+  return (
+    <div
+      ref={ref}
+      className={`grid md:grid-cols-3 gap-8 group fade-up${inView ? ' visible' : ''}`}
+      style={{ animationDelay: `${delay}s` }}
+    >
+      <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant pt-2">
+        {period}
+      </div>
+      <div className="md:col-span-2">
+        <h3 className="font-headline text-3xl font-bold mb-2 group-hover:translate-x-2 transition-transform duration-500">
+          {company}
+        </h3>
+        <p className="font-label text-[11px] text-primary-container uppercase tracking-widest mb-6">
+          {role}
+        </p>
+        <p className="text-on-surface-variant leading-relaxed">{description}</p>
+      </div>
+    </div>
+  )
+}
+
+/* ── Experience ── */
 function Experience() {
   const jobs = [
     {
@@ -170,6 +313,8 @@ function Experience() {
     },
   ]
 
+  const [lineRef, lineInView] = useInView({ threshold: 0.05 })
+
   return (
     <section className="py-48 px-6 max-w-5xl mx-auto" id="work">
       <div className="mb-24">
@@ -181,30 +326,59 @@ function Experience() {
         </h2>
       </div>
 
-      <div className="space-y-32">
-        {jobs.map(({ period, company, role, description }) => (
-          <div key={company} className="grid md:grid-cols-3 gap-8 group">
-            <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant pt-2">
-              {period}
-            </div>
-            <div className="md:col-span-2">
-              <h3 className="font-headline text-3xl font-bold mb-2 group-hover:translate-x-2 transition-transform duration-500">
-                {company}
-              </h3>
-              <p className="font-label text-[11px] text-primary-container uppercase tracking-widest mb-6">
-                {role}
-              </p>
-              <p className="text-on-surface-variant leading-relaxed">
-                {description}
-              </p>
-            </div>
-          </div>
-        ))}
+      <div className="relative">
+        {/* Timeline line draws itself on scroll-into-view */}
+        <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px overflow-hidden">
+          <div
+            ref={lineRef}
+            className={`timeline-line${lineInView ? ' visible' : ''}`}
+          />
+        </div>
+
+        <div className="space-y-32 md:pl-12">
+          {jobs.map((job, i) => (
+            <JobItem key={job.company} {...job} delay={i * 0.15} />
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
+/* ── Accordion item with smooth expand ── */
+function AccordionItem({ title, body }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="border-b border-outline-variant/20 py-8">
+      <button
+        role="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex justify-between items-center w-full text-left"
+      >
+        <span className="font-headline text-2xl">{title}</span>
+        <span
+          className="material-symbols-outlined transition-transform duration-300"
+          style={{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}
+        >
+          arrow_outward
+        </span>
+      </button>
+
+      <div
+        className="overflow-hidden"
+        style={{
+          maxHeight: open ? '400px' : '0',
+          transition: 'max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
+      >
+        <div className="mt-6 text-on-surface-variant max-w-2xl">{body}</div>
+      </div>
+    </div>
+  )
+}
+
+/* ── WhyMe ── */
 function WhyMe() {
   const items = [
     {
@@ -234,15 +408,7 @@ function WhyMe() {
 
         <div className="border-t border-outline-variant/20">
           {items.map(({ title, body }) => (
-            <details key={title} className="group border-b border-outline-variant/20 py-8">
-              <summary className="flex justify-between items-center cursor-pointer list-none">
-                <span className="font-headline text-2xl">{title}</span>
-                <span className="material-symbols-outlined group-open:rotate-90 transition-transform duration-300">
-                  arrow_outward
-                </span>
-              </summary>
-              <div className="mt-6 text-on-surface-variant max-w-2xl">{body}</div>
-            </details>
+            <AccordionItem key={title} title={title} body={body} />
           ))}
         </div>
       </div>
@@ -250,6 +416,7 @@ function WhyMe() {
   )
 }
 
+/* ── Skills ── */
 function Skills() {
   const categories = [
     {
@@ -291,6 +458,7 @@ function Skills() {
   )
 }
 
+/* ── Achievements ── */
 function Achievements() {
   const items = [
     {
@@ -334,6 +502,7 @@ function Achievements() {
   )
 }
 
+/* ── Education ── */
 function Education() {
   const entries = [
     {
@@ -374,6 +543,7 @@ function Education() {
   )
 }
 
+/* ── Footer ── */
 function Footer() {
   const links = [
     { label: 'EMAIL',    href: 'mailto:contact@fasolim.dev' },
@@ -412,9 +582,11 @@ function Footer() {
   )
 }
 
+/* ── App ── */
 export default function App() {
   return (
     <div className="font-body selection:bg-primary-container selection:text-on-primary-container">
+      <CustomCursor />
       <Nav />
       <Hero />
       <Editorial />

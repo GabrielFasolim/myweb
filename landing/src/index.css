@@ -195,14 +195,6 @@ html {
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ── Editorial mask reveal ── */
-.mask-reveal {
-  clip-path: inset(0 100% 0 0);
-}
-
-.mask-reveal.visible {
-  animation: maskReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
 
 /* ── Experience timeline line ── */
 .timeline-line {
