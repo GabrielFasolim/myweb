@@ -6,6 +6,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import heroBgDesktop from './assets/fasola.png'
+import heroBgMobile from './assets/fasolacelular.png'
+
 /* ── useInView — fires once when element enters viewport ── */
 function useInView(options = {}) {
   const ref = useRef(null)
@@ -155,7 +158,22 @@ function Hero() {
   const lastName = name.split(' ').slice(1).join(' ') || 'FASOLIM'
 
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center px-6 text-center pt-24 pb-12">
+    <section className="relative min-h-screen overflow-hidden flex flex-col justify-center items-center px-6 text-center pt-24 pb-12">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat md:hidden"
+        style={{ backgroundImage: `url(${heroBgMobile})` }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 hidden bg-cover bg-center bg-no-repeat md:block"
+        style={{ backgroundImage: `url(${heroBgDesktop})` }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-background/85 via-background/70 to-background"
+      />
+      <div className="relative z-10 flex min-h-0 w-full max-w-5xl flex-1 flex-col justify-center items-center">
       <h1 className="font-headline font-extrabold text-5xl md:text-8xl lg:text-9xl tracking-[0.1em] text-primary mb-5 mt-10 uppercase leading-[0.95]">
         <span className="block">
           <SplitText text={firstName} />
@@ -188,6 +206,7 @@ function Hero() {
         <span className="material-symbols-outlined animate-bounce">
           arrow_downward
         </span>
+      </div>
       </div>
     </section>
   )
