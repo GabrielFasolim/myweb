@@ -4,7 +4,7 @@
     "work": "WORK",
     "about": "ABOUT",
     "contact": "CONTACT",
-    "resume": "RESUME"
+    "resume": "LINKEDIN"
   },
   "hero": {
     "name": "GABRIEL FASOLIM",
@@ -13,7 +13,12 @@
     "scroll": "Scroll to explore"
   },
   "editorial": {
-    "words": ["FINTECH", "BLOCKCHAIN", "INTERNET OF THINGS"]
+    "words": ["FINTECH", "BLOCKCHAIN", "INTERNET OF THINGS"],
+    "descriptions": [
+      "Designing transaction systems where latency and precision are non-negotiable. Building the future of digital assets.",
+      "Smart contract integration and decentralized architecture. Navigating the complexities of distributed ledgers.",
+      "Connecting the physical and digital worlds through robust real-time data processing and device management."
+    ]
   },
   "stats": {
     "items": [
@@ -128,7 +133,7 @@
       { "label": "EMAIL",    "href": "mailto:contact@fasolim.dev" },
       { "label": "PHONE",    "href": "#" },
       { "label": "LOCATION", "href": "#" },
-      { "label": "LINKEDIN", "href": "#" },
+      { "label": "LINKEDIN", "href": "https://www.linkedin.com/in/gabrielfasolim/" },
       { "label": "GITHUB",   "href": "#" }
     ]
   }

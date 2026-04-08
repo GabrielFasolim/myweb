@@ -4,7 +4,7 @@
     "work": "PROJETOS",
     "about": "SOBRE",
     "contact": "CONTATO",
-    "resume": "CURRÍCULO"
+    "resume": "LINKEDIN"
   },
   "hero": {
     "name": "GABRIEL FASOLIM",
@@ -13,7 +13,12 @@
     "scroll": "Role para explorar"
   },
   "editorial": {
-    "words": ["FINTECH", "BLOCKCHAIN", "INTERNET DAS COISAS"]
+    "words": ["FINTECH", "BLOCKCHAIN", "INTERNET DAS COISAS"],
+    "descriptions": [
+      "Projetando sistemas transacionais onde latência e precisão são inegociáveis. Construindo o futuro dos ativos digitais.",
+      "Integração de smart contracts e arquitetura descentralizada. Navegando a complexidade dos ledgers distribuídos.",
+      "Conectando os mundos físico e digital com processamento de dados em tempo real e gestão de dispositivos robustos."
+    ]
   },
   "stats": {
     "items": [
@@ -128,7 +133,7 @@
       { "label": "E-MAIL",    "href": "mailto:contact@fasolim.dev" },
       { "label": "TELEFONE",  "href": "#" },
       { "label": "LOCALIZAÇÃO", "href": "#" },
-      { "label": "LINKEDIN",  "href": "#" },
+      { "label": "LINKEDIN",  "href": "https://www.linkedin.com/in/gabrielfasolim/" },
       { "label": "GITHUB",    "href": "#" }
     ]
   }

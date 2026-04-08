@@ -157,9 +157,9 @@ html {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes maskReveal {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0% 0 0); }
+@keyframes marqueeRtl {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
 
 @keyframes drawLine {

@@ -4,14 +4,17 @@
    ───────────────────────────────────────────── */
 
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 /* ── useInView — fires once when element enters viewport ── */
 function useInView(options = {}) {
   const ref = useRef(null)
   const [inView, setInView] = useState(false)
+
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -21,9 +24,11 @@ function useInView(options = {}) {
       },
       { threshold: 0.15, ...options }
     )
+
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
+
   return [ref, inView]
 }
 
@@ -34,18 +39,23 @@ function CustomCursor() {
 
   useEffect(() => {
     const el = ref.current
+
     const onMove = (e) => {
+      if (!el) return
       el.style.left = e.clientX + 'px'
-      el.style.top  = e.clientY + 'px'
+      el.style.top = e.clientY + 'px'
     }
+
     const onOver = (e) => {
       if (e.target.closest('a, button, [role="button"]')) setHovering(true)
     }
+
     const onOut = () => setHovering(false)
 
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseover', onOver)
     window.addEventListener('mouseout', onOut)
+
     return () => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseover', onOver)
@@ -73,10 +83,16 @@ function SplitText({ text }) {
 
 /* ── Nav ── */
 function Nav() {
+  const { t, i18n } = useTranslation()
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang)
+  }
+
   return (
     <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-8 bg-[#050505] mix-blend-difference">
       <div className="text-xl font-bold tracking-[0.2em] text-white uppercase font-headline">
-        GF
+        {t('nav.logo')}
       </div>
 
       <div className="hidden md:flex gap-12">
@@ -84,42 +100,68 @@ function Nav() {
           className="font-label text-[10px] uppercase tracking-widest text-white font-bold opacity-100 hover:opacity-100 transition-opacity duration-300"
           href="#work"
         >
-          WORK
+          {t('nav.work')}
         </a>
         <a
           className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
           href="#about"
         >
-          ABOUT
+          {t('nav.about')}
         </a>
         <a
           className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
           href="#contact"
         >
-          CONTACT
+          {t('nav.contact')}
         </a>
       </div>
 
-      <a
-        className="font-label text-[10px] uppercase tracking-widest text-white border border-outline-variant/20 px-6 py-2 hover:bg-white hover:text-black transition-all duration-300"
-        href="#"
-      >
-        RESUME
-      </a>
+      <div className="flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-1 border border-outline-variant/20 px-2 py-1">
+          <button
+            type="button"
+            onClick={() => changeLanguage('pt')}
+            className={`font-label text-[10px] uppercase tracking-widest px-2 py-1 transition-opacity duration-300 ${i18n.language === 'pt' ? 'text-white opacity-100' : 'text-[#e8e6e0] opacity-60 hover:opacity-100'}`}
+          >
+            PT
+          </button>
+          <button
+            type="button"
+            onClick={() => changeLanguage('en')}
+            className={`font-label text-[10px] uppercase tracking-widest px-2 py-1 transition-opacity duration-300 ${i18n.language === 'en' ? 'text-white opacity-100' : 'text-[#e8e6e0] opacity-60 hover:opacity-100'}`}
+          >
+            EN
+          </button>
+        </div>
+
+        <a
+          className="font-label text-[10px] uppercase tracking-widest text-white border border-outline-variant/20 px-6 py-2 hover:bg-white hover:text-black transition-all duration-300"
+          href="https://www.linkedin.com/in/gabrielfasolim/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t('nav.resume')}
+        </a>
+      </div>
     </nav>
   )
 }
 
 /* ── Hero ── */
 function Hero() {
+  const { t } = useTranslation()
+  const name = t('hero.name')
+  const firstName = name.split(' ')[0] || 'GABRIEL'
+  const lastName = name.split(' ').slice(1).join(' ') || 'FASOLIM'
+
   return (
     <section className="min-h-screen flex flex-col justify-center items-center px-6 text-center pt-24 pb-12">
       <h1 className="font-headline font-extrabold text-5xl md:text-8xl lg:text-9xl tracking-[0.1em] text-primary mb-5 mt-10 uppercase leading-[0.95]">
         <span className="block">
-          <SplitText text="GABRIEL" />
+          <SplitText text={firstName} />
         </span>
         <span className="block">
-          <SplitText text="FASOLIM" />
+          <SplitText text={lastName} />
         </span>
       </h1>
 
@@ -127,7 +169,7 @@ function Hero() {
         className="font-label text-xs md:text-sm uppercase tracking-[0.3em] text-on-surface-variant mb-12 fade-up-hero"
         style={{ animationDelay: '0.8s' }}
       >
-        Mid-Level Full-Stack Developer · Fintech &amp; Blockchain
+        {t('hero.subtitle')}
       </p>
 
       <div
@@ -135,15 +177,13 @@ function Hero() {
         style={{ animationDelay: '1s' }}
       >
         <p className="text-lg md:text-xl text-on-surface leading-relaxed font-body">
-          Architecting high-criticality financial systems with a focus on
-          structural integrity and performance. I bridge the gap between complex
-          backend logic and seamless frontend experiences.
+          {t('hero.description')}
         </p>
       </div>
 
       <div className="mt-auto pt-12 flex flex-col items-center gap-4 opacity-40">
         <span className="font-label text-[10px] uppercase tracking-widest">
-          Scroll to explore
+          {t('hero.scroll')}
         </span>
         <span className="material-symbols-outlined animate-bounce">
           arrow_downward
@@ -153,70 +193,58 @@ function Hero() {
   )
 }
 
-/* ── Editorial word with fade-in + lateral parallax ── */
-function EditorialWord({ text, align, delay = 0 }) {
-  const [ref, inView] = useInView({ threshold: 0 })
-  const [offset, setOffset] = useState(0)
+/* ── Marquee word — texto passa de um lado ao outro, 1–2 repetições visíveis ── */
+function MarqueeWord({ text, direction = 'left', speed = 1000 }) {
+  const animation = direction === 'right'
+    ? `marqueeRtl ${speed}s linear infinite`
+    : `marquee ${speed}s linear infinite`
 
-  useEffect(() => {
-    const dir = align === 'left' ? -1 : 1
-    const onScroll = () => setOffset(window.scrollY * 0.025 * dir)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [align])
+  const word = (
+    <span className="bleed-text font-headline font-extrabold tracking-tighter text-surface-container-highest/20 shrink-0">
+      {text}
+    </span>
+  )
+  const gap = <span className="shrink-0 inline-block w-[80vw]" />
 
   return (
-    <h2
-      ref={ref}
-      className={[
-        'bleed-text font-headline font-extrabold tracking-tighter',
-        'text-surface-container-highest/20 whitespace-nowrap',
-        align === 'left' ? '-ml-20' : '-mr-20 text-right',
-      ].join(' ')}
-      style={{
-        transform: `translateX(${offset}px)`,
-        opacity: inView ? 1 : 0,
-        transition: `opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-      }}
-    >
-      {text}
-    </h2>
+    <div className="overflow-hidden w-full">
+      <div className="flex items-center whitespace-nowrap" style={{ animation }}>
+        {word}{gap}{word}{gap}
+      </div>
+    </div>
   )
 }
 
 /* ── Editorial ── */
 function Editorial() {
+  const { t } = useTranslation()
+  const words = t('editorial.words', { returnObjects: true })
+
   return (
-    <section className="py-32 overflow-hidden">
-      {/* FINTECH */}
-      <div className="relative mb-40">
-        <EditorialWord text="FINTECH" align="left" />
-        <div className="max-w-md ml-auto mr-12 -mt-12 md:-mt-24 relative z-10">
+    <section className="py-32 space-y-20">
+      <div>
+        <MarqueeWord text={words[0]} direction="left" speed={40} />
+        <div className="max-w-md ml-auto mr-12 mt-8 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
-            Designing transaction systems where latency and precision are
-            non-negotiable. Building the future of digital assets.
+            {t('editorial.descriptions.0')}
           </p>
         </div>
       </div>
 
-      {/* BLOCKCHAIN */}
-      <div className="relative mb-40">
-        <EditorialWord text="BLOCKCHAIN" align="right" delay={0.1} />
-        <div className="max-w-md mr-auto ml-12 -mt-12 md:-mt-24 relative z-10">
+      <div>
+        <MarqueeWord text={words[1]} direction="right" speed={52} />
+        <div className="max-w-md mr-auto ml-12 mt-8 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
-            Smart contract integration and decentralized architecture.
-            Navigating the complexities of distributed ledgers.
+            {t('editorial.descriptions.1')}
           </p>
         </div>
       </div>
 
-      {/* IOT */}
-      <div className="relative">
-        <EditorialWord text="INTERNET OF THINGS" align="left" delay={0.1} />
-        <div className="max-w-md ml-auto mr-12 -mt-12 md:-mt-24 relative z-10">
+      <div>
+        <MarqueeWord text={words[2]} direction="left" speed={60} />
+        <div className="max-w-md ml-auto mr-12 mt-8 relative z-10">
           <p className="text-on-surface-variant leading-relaxed">
-            Connecting the physical and digital worlds through robust real-time
-            data processing and device management.
+            {t('editorial.descriptions.2')}
           </p>
         </div>
       </div>
@@ -226,13 +254,8 @@ function Editorial() {
 
 /* ── Stats ── */
 function Stats() {
-  const items = [
-    { value: '4+ Years',    label: 'Experience' },
-    { value: '4 Companies', label: 'Global Reach' },
-    { value: '3x Award',    label: 'PUCPR Winner' },
-    { value: 'Best TCC',    label: 'Recognition' },
-    { value: 'Honors',      label: 'Graduate' },
-  ]
+  const { t } = useTranslation()
+  const items = t('stats.items', { returnObjects: true })
   const [ref, inView] = useInView()
 
   return (
@@ -265,6 +288,7 @@ function Stats() {
 /* ── Experience — single job row with its own observer ── */
 function JobItem({ period, company, role, description, delay }) {
   const [ref, inView] = useInView()
+
   return (
     <div
       ref={ref}
@@ -289,45 +313,22 @@ function JobItem({ period, company, role, description, delay }) {
 
 /* ── Experience ── */
 function Experience() {
-  const jobs = [
-    {
-      period: '2023 — PRESENT',
-      company: 'Quantum Tech Ventures',
-      role: 'Senior Full-Stack Engineer',
-      description:
-        'Leading the development of high-throughput trading platforms. Implementing microservices architecture for real-time order matching and portfolio management.',
-    },
-    {
-      period: '2021 — 2023',
-      company: 'Radioenge',
-      role: 'Junior Developer / Intern',
-      description:
-        'Engineered IoT gateway interfaces and real-time monitoring dashboards. Streamlined sensor data ingestion pipelines using NestJS and MQTT.',
-    },
-    {
-      period: '2020 — 2021',
-      company: 'Hardness Sistemas',
-      role: 'Full-Stack Developer',
-      description:
-        'Contributed to the development of enterprise resource planning tools, focusing on financial modules and reporting systems using .NET/C#.',
-    },
-  ]
-
+  const { t } = useTranslation()
+  const jobs = t('experience.jobs', { returnObjects: true })
   const [lineRef, lineInView] = useInView({ threshold: 0.05 })
 
   return (
     <section className="py-48 px-6 max-w-5xl mx-auto" id="work">
       <div className="mb-24">
         <span className="font-label text-[10px] uppercase tracking-[0.4em] text-on-surface-variant block mb-4">
-          CURRICULUM
+          {t('experience.eyebrow')}
         </span>
         <h2 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter">
-          EXPERIENCE
+          {t('experience.title')}
         </h2>
       </div>
 
       <div className="relative">
-        {/* Timeline line draws itself on scroll-into-view */}
         <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px overflow-hidden">
           <div
             ref={lineRef}
@@ -380,30 +381,14 @@ function AccordionItem({ title, body }) {
 
 /* ── WhyMe ── */
 function WhyMe() {
-  const items = [
-    {
-      title: 'Systems Thinking',
-      body: "I don't just write code; I design systems. I consider how every component interacts within the larger architecture to ensure scalability and maintainability.",
-    },
-    {
-      title: 'Financial Domain Knowledge',
-      body: 'Deep understanding of ledger systems, transaction integrity, and compliance requirements in the Fintech sector.',
-    },
-    {
-      title: 'Delivery Focus',
-      body: 'Proven track record of meeting critical deadlines in high-pressure environments while maintaining code quality and system stability.',
-    },
-    {
-      title: 'Full Ownership',
-      body: 'Taking responsibility for the entire lifecycle of a feature—from initial requirement gathering to deployment and post-launch monitoring.',
-    },
-  ]
+  const { t } = useTranslation()
+  const items = t('whyme.items', { returnObjects: true })
 
   return (
     <section className="py-48 bg-surface-container-low/30">
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="font-headline text-4xl font-bold mb-16 tracking-tight">
-          WHY WORK WITH ME
+          {t('whyme.title')}
         </h2>
 
         <div className="border-t border-outline-variant/20">
@@ -418,31 +403,19 @@ function WhyMe() {
 
 /* ── Skills ── */
 function Skills() {
-  const categories = [
-    {
-      title: 'FRONTEND',
-      skills: ['Vue.js', 'React', 'Angular', 'Tailwind CSS', 'TypeScript'],
-    },
-    {
-      title: 'BACKEND',
-      skills: ['NestJS', '.NET / C#', 'Node.js', 'GraphQL'],
-    },
-    {
-      title: 'INFRA & OPS',
-      skills: ['PostgreSQL', 'Docker', 'Git', 'AWS'],
-    },
-  ]
+  const { t } = useTranslation()
+  const categories = t('skills.categories', { returnObjects: true })
 
   return (
     <section className="py-48 px-6 max-w-5xl mx-auto">
       <div className="grid md:grid-cols-3 gap-24">
-        {categories.map(({ title, skills }) => (
+        {categories.map(({ title, items }) => (
           <div key={title}>
             <h3 className="font-label text-[10px] uppercase tracking-widest text-primary mb-12">
               {title}
             </h3>
             <div className="flex flex-wrap gap-4">
-              {skills.map((skill) => (
+              {items.map((skill) => (
                 <span
                   key={skill}
                   className="px-4 py-2 border border-outline-variant/20 font-label text-[11px] uppercase tracking-wider"
@@ -460,30 +433,14 @@ function Skills() {
 
 /* ── Achievements ── */
 function Achievements() {
-  const items = [
-    {
-      title: 'Academic Honors & Best TCC',
-      body: 'Awarded for exceptional performance and the most outstanding final graduation project at PUCPR.',
-    },
-    {
-      title: 'ICHILD',
-      body: 'Architected the core system for a child welfare monitoring platform during a dedicated hackathon.',
-    },
-    {
-      title: 'Agenda Hub',
-      body: 'Developed a comprehensive scheduling engine used by multiple business units within an educational ecosystem.',
-    },
-    {
-      title: 'Teaching Assistant',
-      body: 'Mentored junior students in Algorithms and Data Structures, fostering a culture of technical excellence.',
-    },
-  ]
+  const { t } = useTranslation()
+  const items = t('achievements.items', { returnObjects: true })
 
   return (
     <section className="py-48 px-6 bg-surface-container-lowest">
       <div className="max-w-screen-xl mx-auto">
         <h2 className="font-headline text-4xl font-bold mb-16 text-center tracking-tight">
-          ACHIEVEMENTS
+          {t('achievements.title')}
         </h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-outline-variant/20 border border-outline-variant/20">
@@ -504,23 +461,13 @@ function Achievements() {
 
 /* ── Education ── */
 function Education() {
-  const entries = [
-    {
-      school: 'FAE Business School',
-      degree: 'Postgrad in Financial Markets',
-      location: 'CURITIBA, BR',
-    },
-    {
-      school: 'PUCPR',
-      degree: "Bachelor's in Information Systems",
-      location: 'CURITIBA, BR',
-    },
-  ]
+  const { t } = useTranslation()
+  const entries = t('education.entries', { returnObjects: true })
 
   return (
     <section className="py-48 px-6 max-w-5xl mx-auto" id="about">
       <h2 className="font-headline text-4xl font-bold mb-16 tracking-tight">
-        ACADEMIC PATH
+        {t('education.title')}
       </h2>
 
       <div className="space-y-16">
@@ -545,13 +492,8 @@ function Education() {
 
 /* ── Footer ── */
 function Footer() {
-  const links = [
-    { label: 'EMAIL',    href: 'mailto:contact@fasolim.dev' },
-    { label: 'PHONE',    href: '#' },
-    { label: 'LOCATION', href: '#' },
-    { label: 'LINKEDIN', href: '#' },
-    { label: 'GITHUB',   href: '#' },
-  ]
+  const { t } = useTranslation()
+  const links = t('footer.links', { returnObjects: true })
 
   return (
     <footer
@@ -560,10 +502,10 @@ function Footer() {
     >
       <div className="flex flex-col gap-6">
         <div className="text-lg font-bold text-white font-headline uppercase tracking-widest">
-          GABRIEL FASOLIM
+          {t('footer.name')}
         </div>
         <p className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0]">
-          © 2026 GF . ALL RIGHTS RESERVED.
+          {t('footer.copy')}
         </p>
       </div>
 
@@ -573,6 +515,7 @@ function Footer() {
             key={label}
             className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
             href={href}
+            {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             {label}
           </a>
@@ -584,6 +527,12 @@ function Footer() {
 
 /* ── App ── */
 export default function App() {
+  const { i18n } = useTranslation()
+
+  useEffect(() => {
+    document.documentElement.lang = i18n.language
+  }, [i18n.language])
+
   return (
     <div className="font-body selection:bg-primary-container selection:text-on-primary-container">
       <CustomCursor />
