@@ -24,7 +24,7 @@
     "items": [
       { "value": "3+ Years",    "label": "Experience" },
       { "value": "4 Companies", "label": "Global Reach" },
-      { "value": "2x Award",    "label": "PUCPR Winner" },
+      { "value": "3x Award",    "label": "PUCPR Winner" },
       { "value": "Best TCC",    "label": "Recognition" },
       { "value": "Honors",      "label": "Graduate" }
     ]
@@ -37,18 +37,18 @@
         "period": "2023 — PRESENT",
         "company": "Quantum Tech Ventures",
         "role": "Mid-Level Full-Stack Engineer",
-        "description": "Leading the development of high-throughput trading platforms. Implementing microservices architecture for real-time order matching and portfolio management."
+        "description": "At Quantum Tech Ventures, I work on GlobalDex as a core product developer and have been with the product since its creation, building high-throughput financial solutions that power seamless on-ramp and off-ramp journeys and secure, scalable management of both fiat and crypto assets."
       },
       {
         "period": "2021 — 2023",
         "company": "Radioenge",
-        "role": "Junior Developer / Intern",
+        "role": "Junior Developer",
         "description": "Engineered IoT gateway interfaces and real-time monitoring dashboards. Streamlined sensor data ingestion pipelines using NestJS and MQTT."
       },
       {
         "period": "2020 — 2021",
         "company": "Hardness Sistemas",
-        "role": "Full-Stack Developer",
+        "role": "Intern Full-Stack Developer",
         "description": "Contributed to the development of enterprise resource planning tools, focusing on financial modules and reporting systems using .NET/C#."
       }
     ]
