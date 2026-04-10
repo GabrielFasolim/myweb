@@ -4,7 +4,9 @@
     "work": "PROJETOS",
     "about": "SOBRE",
     "contact": "CONTATO",
-    "resume": "LINKEDIN"
+    "resume": "LINKEDIN",
+    "switchToEnglish": "Mudar para inglês",
+    "switchToPortuguese": "Mudar para português"
   },
   "hero": {
     "name": "GABRIEL FASOLIM",
@@ -22,8 +24,8 @@
   },
   "stats": {
     "items": [
-      { "value": "3+ Anos",     "label": "Experiência" },
-      { "value": "4 Empresas",  "label": "Alcance Global" },
+      { "value": "3+\u00a0Anos",     "label": "Experiência" },
+      { "value": "4\u00a0Empresas",  "label": "Alcance Global" },
       { "value": "2x Prêmio",   "label": "Vencedor PUCPR" },
       { "value": "Melhor TCC",  "label": "Reconhecimento" },
       { "value": "Láurea",      "label": "Graduado" }

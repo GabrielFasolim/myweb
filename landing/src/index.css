@@ -73,11 +73,16 @@
   --radius-full: 9999px;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: #050505;
   color: #e8e6e0;
   -webkit-font-smoothing: antialiased;
   font-family: "Manrope", sans-serif;
+  overflow-x: hidden;
 }
 
 .material-symbols-outlined {
@@ -85,7 +90,7 @@ body {
 }
 
 .bleed-text {
-  font-size: clamp(5rem, 15vw, 12rem);
+  font-size: clamp(3.25rem, 11vw, 12rem);
   line-height: 1;
 }
 

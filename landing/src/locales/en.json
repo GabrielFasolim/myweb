@@ -4,7 +4,9 @@
     "work": "WORK",
     "about": "ABOUT",
     "contact": "CONTACT",
-    "resume": "LINKEDIN"
+    "resume": "LINKEDIN",
+    "switchToEnglish": "Switch to English",
+    "switchToPortuguese": "Switch to Portuguese"
   },
   "hero": {
     "name": "GABRIEL FASOLIM",
@@ -22,8 +24,8 @@
   },
   "stats": {
     "items": [
-      { "value": "3+ Years",    "label": "Experience" },
-      { "value": "4 Companies", "label": "Global Reach" },
+      { "value": "3+\u00a0Years",    "label": "Experience" },
+      { "value": "4\u00a0Companies", "label": "Global Reach" },
       { "value": "3x Award",    "label": "PUCPR Winner" },
       { "value": "Best TCC",    "label": "Recognition" },
       { "value": "Honors",      "label": "Graduate" }

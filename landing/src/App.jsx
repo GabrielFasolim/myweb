@@ -92,59 +92,63 @@ function Nav() {
     i18n.changeLanguage(lang)
   }
 
+  const prefersPortuguese = i18n.language.startsWith('pt')
+  let nextLang = 'en'
+  let nextLangAbbrev = 'EN'
+  let switchAriaKey = 'nav.switchToEnglish'
+  if (!prefersPortuguese) {
+    nextLang = 'pt'
+    nextLangAbbrev = 'PT'
+    switchAriaKey = 'nav.switchToPortuguese'
+  }
+
   return (
-    <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-8 bg-[#050505] mix-blend-difference">
-      <div className="text-xl font-bold tracking-[0.2em] text-white uppercase font-headline">
-        {t('nav.logo')}
-      </div>
-
-      <div className="hidden md:flex gap-12">
-        <a
-          className="font-label text-[10px] uppercase tracking-widest text-white font-bold opacity-100 hover:opacity-100 transition-opacity duration-300"
-          href="#work"
-        >
-          {t('nav.work')}
-        </a>
-        <a
-          className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
-          href="#about"
-        >
-          {t('nav.about')}
-        </a>
-        <a
-          className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
-          href="#contact"
-        >
-          {t('nav.contact')}
-        </a>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="hidden sm:flex items-center gap-1 border border-outline-variant/20 px-2 py-1">
-          <button
-            type="button"
-            onClick={() => changeLanguage('pt')}
-            className={`font-label text-[10px] uppercase tracking-widest px-2 py-1 transition-opacity duration-300 ${i18n.language === 'pt' ? 'text-white opacity-100' : 'text-[#e8e6e0] opacity-60 hover:opacity-100'}`}
-          >
-            PT
-          </button>
-          <button
-            type="button"
-            onClick={() => changeLanguage('en')}
-            className={`font-label text-[10px] uppercase tracking-widest px-2 py-1 transition-opacity duration-300 ${i18n.language === 'en' ? 'text-white opacity-100' : 'text-[#e8e6e0] opacity-60 hover:opacity-100'}`}
-          >
-            EN
-          </button>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050505] mix-blend-difference">
+      <div className="mx-auto flex max-w-[1920px] items-center justify-between gap-3 px-6 py-6 md:px-12 md:py-8">
+        <div className="shrink-0 text-xl font-bold tracking-[0.2em] text-white uppercase font-headline">
+          {t('nav.logo')}
         </div>
 
-        <a
-          className="font-label text-[10px] uppercase tracking-widest text-white border border-outline-variant/20 px-6 py-2 hover:bg-white hover:text-black transition-all duration-300"
-          href="https://www.linkedin.com/in/gabrielfasolim/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t('nav.resume')}
-        </a>
+        <div className="hidden md:flex gap-12">
+          <a
+            className="font-label text-[10px] uppercase tracking-widest text-white font-bold opacity-100 hover:opacity-100 transition-opacity duration-300"
+            href="#work"
+          >
+            {t('nav.work')}
+          </a>
+          <a
+            className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
+            href="#about"
+          >
+            {t('nav.about')}
+          </a>
+          <a
+            className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-60 hover:opacity-100 transition-opacity duration-300"
+            href="#contact"
+          >
+            {t('nav.contact')}
+          </a>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-4 sm:gap-6">
+          <button
+            type="button"
+            onClick={() => changeLanguage(nextLang)}
+            className="font-label text-[10px] uppercase tracking-widest text-[#e8e6e0] opacity-70 transition-opacity duration-300 hover:opacity-100"
+            aria-label={t(switchAriaKey)}
+          >
+            {nextLangAbbrev}
+          </button>
+
+          <a
+            className="font-label flex items-center text-[10px] uppercase tracking-widest text-white border border-outline-variant/20 px-4 py-2 sm:px-6 hover:bg-white hover:text-black transition-all duration-300"
+            href="https://www.linkedin.com/in/gabrielfasolim/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('nav.resume')}
+          </a>
+        </div>
       </div>
     </nav>
   )
@@ -226,7 +230,7 @@ function MarqueeWord({ text, direction = 'left', speed = 1000 }) {
   const gap = <span className="shrink-0 inline-block w-[80vw]" />
 
   return (
-    <div className="overflow-hidden w-full">
+    <div className="w-full overflow-hidden px-6 md:px-12">
       <div className="flex items-center whitespace-nowrap" style={{ animation }}>
         {word}{gap}{word}{gap}
       </div>
@@ -240,10 +244,10 @@ function Editorial() {
   const words = t('editorial.words', { returnObjects: true })
 
   return (
-    <section className="py-32 space-y-20">
+    <section className="space-y-16 py-24 md:space-y-20 md:py-32">
       <div>
         <MarqueeWord text={words[0]} direction="left" speed={40} />
-        <div className="max-w-md ml-auto mr-12 mt-8 relative z-10">
+        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-auto md:mr-0 md:px-0 md:pr-12">
           <p className="text-on-surface-variant leading-relaxed">
             {t('editorial.descriptions.0')}
           </p>
@@ -252,7 +256,7 @@ function Editorial() {
 
       <div>
         <MarqueeWord text={words[1]} direction="right" speed={52} />
-        <div className="max-w-md mr-auto ml-12 mt-8 relative z-10">
+        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-0 md:mr-auto md:px-0 md:pl-12">
           <p className="text-on-surface-variant leading-relaxed">
             {t('editorial.descriptions.1')}
           </p>
@@ -261,7 +265,7 @@ function Editorial() {
 
       <div>
         <MarqueeWord text={words[2]} direction="left" speed={60} />
-        <div className="max-w-md ml-auto mr-12 mt-8 relative z-10">
+        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-auto md:mr-0 md:px-0 md:pr-12">
           <p className="text-on-surface-variant leading-relaxed">
             {t('editorial.descriptions.2')}
           </p>
@@ -278,23 +282,23 @@ function Stats() {
   const [ref, inView] = useInView()
 
   return (
-    <section className="py-24 border-y border-outline-variant/10 bg-surface-container-lowest/50">
+    <section className="border-y border-outline-variant/10 bg-surface-container-lowest/50 py-16 md:py-24">
       <div
         ref={ref}
-        className="max-w-screen-xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-12 text-center"
+        className="mx-auto grid max-w-screen-xl grid-cols-2 place-items-stretch gap-x-4 gap-y-10 px-6 text-center sm:gap-x-8 md:grid-cols-5 md:gap-12"
       >
         {items.map(({ value, label }, i) => (
           <div
             key={label}
             className={[
-              'flex flex-col gap-2 fade-up',
+              'fade-up flex min-h-[5.5rem] flex-col items-center justify-start gap-2 sm:min-h-[6rem]',
               inView ? 'visible' : '',
-              i === 4 ? 'col-span-2 md:col-span-1' : '',
+              i === 4 ? 'col-span-2 justify-self-center md:col-span-1 md:justify-self-stretch' : '',
             ].join(' ')}
             style={{ animationDelay: `${i * 0.1}s` }}
           >
-            <span className="font-headline text-3xl font-bold">{value}</span>
-            <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+            <span className="font-headline text-2xl font-bold leading-tight sm:text-3xl">{value}</span>
+            <span className="font-label text-[10px] uppercase leading-snug tracking-widest text-on-surface-variant">
               {label}
             </span>
           </div>
