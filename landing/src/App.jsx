@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import heroBgDesktop from './assets/fasola.png'
 import heroBgMobile from './assets/fasolacelular.png'
+import FlowArt, { FlowSection } from './components/ui/story-scroll.jsx'
 
 /* ── useInView — fires once when element enters viewport ── */
 function useInView(options = {}) {
@@ -238,13 +239,13 @@ function MarqueeWord({ text, direction = 'left', speed = 1000 }) {
   )
 }
 
-/* ── Editorial ── */
+/* ── Editorial (renders inside FlowSection) ── */
 function Editorial() {
   const { t } = useTranslation()
   const words = t('editorial.words', { returnObjects: true })
 
   return (
-    <section className="space-y-16 py-24 md:space-y-20 md:py-32">
+    <div className="w-full space-y-16 md:space-y-20">
       <div>
         <MarqueeWord text={words[0]} direction="left" speed={40} />
         <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-auto md:mr-0 md:px-0 md:pr-12">
@@ -271,7 +272,7 @@ function Editorial() {
           </p>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -334,15 +335,15 @@ function JobItem({ period, company, role, description, delay }) {
   )
 }
 
-/* ── Experience ── */
+/* ── Experience (renders inside FlowSection) ── */
 function Experience() {
   const { t } = useTranslation()
   const jobs = t('experience.jobs', { returnObjects: true })
   const [lineRef, lineInView] = useInView({ threshold: 0.05 })
 
   return (
-    <section className="py-48 px-6 max-w-5xl mx-auto" id="work">
-      <div className="mb-24">
+    <div className="mx-auto w-full max-w-5xl">
+      <div className="mb-16">
         <span className="font-label text-[10px] uppercase tracking-[0.4em] text-on-surface-variant block mb-4">
           {t('experience.eyebrow')}
         </span>
@@ -359,13 +360,13 @@ function Experience() {
           />
         </div>
 
-        <div className="space-y-32 md:pl-12">
+        <div className="space-y-16 md:space-y-20 md:pl-12">
           {jobs.map((job, i) => (
             <JobItem key={job.company} {...job} delay={i * 0.15} />
           ))}
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -402,25 +403,23 @@ function AccordionItem({ title, body }) {
   )
 }
 
-/* ── WhyMe ── */
+/* ── WhyMe (renders inside FlowSection) ── */
 function WhyMe() {
   const { t } = useTranslation()
   const items = t('whyme.items', { returnObjects: true })
 
   return (
-    <section className="py-48 bg-surface-container-low/30">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="font-headline text-4xl font-bold mb-16 tracking-tight">
-          {t('whyme.title')}
-        </h2>
+    <div className="mx-auto w-full max-w-4xl">
+      <h2 className="font-headline text-4xl font-bold mb-12 tracking-tight">
+        {t('whyme.title')}
+      </h2>
 
-        <div className="border-t border-outline-variant/20">
-          {items.map(({ title, body }) => (
-            <AccordionItem key={title} title={title} body={body} />
-          ))}
-        </div>
+      <div className="border-t border-outline-variant/20">
+        {items.map(({ title, body }) => (
+          <AccordionItem key={title} title={title} body={body} />
+        ))}
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -454,31 +453,70 @@ function Skills() {
   )
 }
 
-/* ── Achievements ── */
+/* ── Achievements (renders inside FlowSection) ── */
 function Achievements() {
   const { t } = useTranslation()
   const items = t('achievements.items', { returnObjects: true })
 
   return (
-    <section className="py-48 px-6 bg-surface-container-lowest">
-      <div className="max-w-screen-xl mx-auto">
-        <h2 className="font-headline text-4xl font-bold mb-16 text-center tracking-tight">
-          {t('achievements.title')}
-        </h2>
+    <div className="mx-auto w-full max-w-screen-xl">
+      <h2 className="font-headline text-4xl font-bold mb-12 text-center tracking-tight">
+        {t('achievements.title')}
+      </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-outline-variant/20 border border-outline-variant/20">
-          {items.map(({ title, body }) => (
-            <div
-              key={title}
-              className="bg-background p-12 hover:bg-surface-container-low transition-colors duration-500"
-            >
-              <h4 className="font-headline text-xl font-bold mb-4">{title}</h4>
-              <p className="text-sm text-on-surface-variant leading-relaxed">{body}</p>
-            </div>
-          ))}
-        </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-outline-variant/20 border border-outline-variant/20">
+        {items.map(({ title, body }) => (
+          <div
+            key={title}
+            className="bg-background p-8 hover:bg-surface-container-low transition-colors duration-500"
+          >
+            <h4 className="font-headline text-xl font-bold mb-4">{title}</h4>
+            <p className="text-sm text-on-surface-variant leading-relaxed">{body}</p>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
+  )
+}
+
+/* ── Flow — pinned/rotated scroll sequence ── */
+const FLOW_BACKGROUNDS = ['#050505', '#0e0e0e', '#131313', '#1c1b1b']
+
+function Flow() {
+  const { t } = useTranslation()
+  return (
+    <FlowArt aria-label={t('flow.ariaLabel')}>
+      <FlowSection
+        align="center"
+        innerClassName="!px-0"
+        style={{ backgroundColor: FLOW_BACKGROUNDS[0] }}
+        aria-label={t('flow.editorial')}
+      >
+        <Editorial />
+      </FlowSection>
+      <FlowSection
+        id="work"
+        align="center"
+        style={{ backgroundColor: FLOW_BACKGROUNDS[1] }}
+        aria-label={t('flow.experience')}
+      >
+        <Experience />
+      </FlowSection>
+      <FlowSection
+        align="center"
+        style={{ backgroundColor: FLOW_BACKGROUNDS[2] }}
+        aria-label={t('flow.whyme')}
+      >
+        <WhyMe />
+      </FlowSection>
+      <FlowSection
+        align="center"
+        style={{ backgroundColor: FLOW_BACKGROUNDS[3] }}
+        aria-label={t('flow.achievements')}
+      >
+        <Achievements />
+      </FlowSection>
+    </FlowArt>
   )
 }
 
@@ -561,12 +599,9 @@ export default function App() {
       <CustomCursor />
       <Nav />
       <Hero />
-      <Editorial />
       <Stats />
-      <Experience />
-      <WhyMe />
+      <Flow />
       <Skills />
-      <Achievements />
       <Education />
       <Footer />
     </div>
