@@ -6,9 +6,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { BRACKET_CLOSE, BRACKET_OPEN, formatIndex } from './animations/constants'
+import {
+  useHorizontalScroll,
+  useRevealBatch,
+  useScrollProgress,
+  useVelocitySkew,
+} from './animations/hooks'
 import heroBgDesktop from './assets/fasola.png'
 import heroBgMobile from './assets/fasolacelular.png'
 import FlowArt, { FlowSection } from './components/ui/story-scroll.jsx'
+
 
 /* ── useInView — fires once when element enters viewport ── */
 function useInView(options = {}) {
@@ -83,6 +91,13 @@ function SplitText({ text }) {
       ))}
     </span>
   )
+}
+
+function ScrollProgress() {
+  const barRef = useRef(null)
+  useScrollProgress(barRef)
+
+  return <div ref={barRef} aria-hidden="true" className="scroll-progress" />
 }
 
 /* ── Nav ── */
@@ -217,62 +232,46 @@ function Hero() {
   )
 }
 
-/* ── Marquee word — texto passa de um lado ao outro, 1–2 repetições visíveis ── */
-function MarqueeWord({ text, direction = 'left', speed = 1000 }) {
-  const animation = direction === 'right'
-    ? `marqueeRtl ${speed}s linear infinite`
-    : `marquee ${speed}s linear infinite`
-
-  const word = (
-    <span className="bleed-text font-headline font-extrabold tracking-tighter text-surface-container-highest/20 shrink-0">
-      {text}
-    </span>
-  )
-  const gap = <span className="shrink-0 inline-block w-[80vw]" />
+/* ── Editorial — horizontal pinned scroll ── */
+function EditorialPanel({ word, index }) {
+  const { t } = useTranslation()
 
   return (
-    <div className="w-full overflow-hidden px-6 md:px-12">
-      <div className="flex items-center whitespace-nowrap" style={{ animation }}>
-        {word}{gap}{word}{gap}
-      </div>
-    </div>
+    <article className="editorial-panel">
+      <span aria-hidden="true" className="editorial-panel__index font-label">
+        <span>{BRACKET_OPEN}</span>
+        {formatIndex(index)}
+        <span>{BRACKET_CLOSE}</span>
+      </span>
+      <span
+        data-skew
+        className="editorial-panel__word font-headline font-extrabold tracking-tighter text-surface-container-highest/20"
+      >
+        {word}
+      </span>
+      <p data-h-reveal className="editorial-panel__body text-on-surface-variant leading-relaxed">
+        {t(`editorial.descriptions.${index}`)}
+      </p>
+    </article>
   )
 }
 
-/* ── Editorial (renders inside FlowSection) ── */
 function Editorial() {
   const { t } = useTranslation()
   const words = t('editorial.words', { returnObjects: true })
+  const sectionRef = useRef(null)
+  const trackRef = useRef(null)
+  useHorizontalScroll({ sectionRef, trackRef })
+  useVelocitySkew(sectionRef)
 
   return (
-    <div className="w-full space-y-16 md:space-y-20">
-      <div>
-        <MarqueeWord text={words[0]} direction="left" speed={40} />
-        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-auto md:mr-0 md:px-0 md:pr-12">
-          <p className="text-on-surface-variant leading-relaxed">
-            {t('editorial.descriptions.0')}
-          </p>
-        </div>
+    <section ref={sectionRef} aria-label={t('flow.editorial')} className="h-scroll">
+      <div ref={trackRef} className="h-track">
+        {words.map((word, i) => (
+          <EditorialPanel key={word} word={word} index={i} />
+        ))}
       </div>
-
-      <div>
-        <MarqueeWord text={words[1]} direction="right" speed={52} />
-        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-0 md:mr-auto md:px-0 md:pl-12">
-          <p className="text-on-surface-variant leading-relaxed">
-            {t('editorial.descriptions.1')}
-          </p>
-        </div>
-      </div>
-
-      <div>
-        <MarqueeWord text={words[2]} direction="left" speed={60} />
-        <div className="relative z-10 mx-auto mt-8 w-full max-w-md px-6 md:ml-auto md:mr-0 md:px-0 md:pr-12">
-          <p className="text-on-surface-variant leading-relaxed">
-            {t('editorial.descriptions.2')}
-          </p>
-        </div>
-      </div>
-    </div>
+    </section>
   )
 }
 
@@ -488,19 +487,10 @@ function Flow() {
     <FlowArt aria-label={t('flow.ariaLabel')}>
       <FlowSection
         align="center"
-        innerClassName="!px-0"
-        style={{ backgroundColor: FLOW_BACKGROUNDS[0] }}
-        aria-label={t('flow.editorial')}
-      >
-        <Editorial />
-      </FlowSection>
-      <FlowSection
-        id="work"
-        align="center"
         style={{ backgroundColor: FLOW_BACKGROUNDS[1] }}
-        aria-label={t('flow.experience')}
+        aria-label={t('flow.achievements')}
       >
-        <Experience />
+        <Achievements />
       </FlowSection>
       <FlowSection
         align="center"
@@ -510,11 +500,12 @@ function Flow() {
         <WhyMe />
       </FlowSection>
       <FlowSection
+        id="work"
         align="center"
         style={{ backgroundColor: FLOW_BACKGROUNDS[3] }}
-        aria-label={t('flow.achievements')}
+        aria-label={t('flow.experience')}
       >
-        <Achievements />
+        <Experience />
       </FlowSection>
     </FlowArt>
   )
@@ -527,7 +518,7 @@ function Education() {
 
   return (
     <section className="py-48 px-6 max-w-5xl mx-auto" id="about">
-      <h2 className="font-headline text-4xl font-bold mb-16 tracking-tight">
+      <h2 data-reveal className="font-headline text-4xl font-bold mb-16 tracking-tight">
         {t('education.title')}
       </h2>
 
@@ -535,6 +526,7 @@ function Education() {
         {entries.map(({ school, degree, location }) => (
           <div
             key={school}
+            data-reveal
             className="flex flex-col md:flex-row justify-between items-baseline gap-4 border-b border-outline-variant/10 pb-8"
           >
             <div>
@@ -589,18 +581,22 @@ function Footer() {
 /* ── App ── */
 export default function App() {
   const { i18n } = useTranslation()
+  const rootRef = useRef(null)
+  useRevealBatch(rootRef)
 
   useEffect(() => {
     document.documentElement.lang = i18n.language
   }, [i18n.language])
 
   return (
-    <div className="font-body selection:bg-primary-container selection:text-on-primary-container">
+    <div ref={rootRef} className="font-body selection:bg-primary-container selection:text-on-primary-container">
+      <ScrollProgress />
       <CustomCursor />
       <Nav />
       <Hero />
       <Stats />
       <Flow />
+      <Editorial />
       <Skills />
       <Education />
       <Footer />

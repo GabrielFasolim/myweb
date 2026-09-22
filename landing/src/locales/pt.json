@@ -43,10 +43,16 @@
     "title": "EXPERIÊNCIA",
     "jobs": [
       {
-        "period": "2023 — ATUAL",
+        "period": "2026 — ATUAL",
+        "company": "Spacecom",
+        "role": "Desenvolvedor Full-Stack Pleno",
+        "description": "Atuo como desenvolvedor full-stack na Spacecom, a 3ª maior empresa de monitoramento do mundo."
+      },
+      {
+        "period": "2023 — 2026",
         "company": "Quantum Tech Ventures",
         "role": "Engenheiro Full-Stack Sênior",
-        "description": "Na Quantum Tech Ventures, atuo no GlobalDex como desenvolvedor principal do produto e estou com ele desde a sua criação, construindo soluções financeiras de alta performance que viabilizam jornadas fluidas de on-ramp e off-ramp, com gestão segura e escalável de ativos fiat e crypto."
+        "description": "Na Quantum Tech Ventures, atuei no GlobalDex como desenvolvedor principal do produto desde a sua criação, construindo soluções financeiras de alta performance que viabilizam jornadas fluidas de on-ramp e off-ramp, com gestão segura e escalável de ativos fiat e crypto."
       },
       {
         "period": "2021 — 2023",

@@ -43,10 +43,16 @@
     "title": "EXPERIENCE",
     "jobs": [
       {
-        "period": "2023 — PRESENT",
+        "period": "2026 — PRESENT",
+        "company": "Spacecom",
+        "role": "Mid-Level Full-Stack Developer",
+        "description": "Full-stack developer at Spacecom, the world's 3rd largest monitoring company."
+      },
+      {
+        "period": "2023 — 2026",
         "company": "Quantum Tech Ventures",
         "role": "Mid-Level Full-Stack Engineer",
-        "description": "At Quantum Tech Ventures, I work on GlobalDex as a core product developer and have been with the product since its creation, building high-throughput financial solutions that power seamless on-ramp and off-ramp journeys and secure, scalable management of both fiat and crypto assets."
+        "description": "At Quantum Tech Ventures, I worked on GlobalDex as a core product developer from its creation, building high-throughput financial solutions that power seamless on-ramp and off-ramp journeys and secure, scalable management of both fiat and crypto assets."
       },
       {
         "period": "2021 — 2023",
