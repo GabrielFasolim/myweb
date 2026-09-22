@@ -113,3 +113,38 @@ export function useRevealBatch(scopeRef) {
     })
   })
 }
+
+export function useMottoAnimation(scopeRef) {
+  useGSAP(() => {
+    gsap.matchMedia().add(MOTION_OK, () => {
+      const scope = scopeRef.current
+      const chars = gsap.utils.toArray('[data-motto-char]', scope)
+      const dims = gsap.utils.toArray('[data-motto-char="dim"]', scope)
+      const highlights = gsap.utils.toArray('[data-motto-char="highlight"]', scope)
+      const bang = scope.querySelector('[data-motto-bang]')
+
+      gsap.set(dims, { opacity: 1 })
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: scope,
+            start: 'top top',
+            end: '+=220%',
+            pin: true,
+            scrub: 1,
+          },
+        })
+        .from(chars, { yPercent: 110, opacity: 0, duration: 1, stagger: 0.05, ease: EASE_OUT })
+        .to(dims, { opacity: 0.12, duration: 1, stagger: 0.03, ease: 'power2.inOut' }, '+=0.6')
+        .fromTo(
+          bang,
+          { maxWidth: 0, yPercent: -160, rotation: -35, opacity: 0 },
+          { maxWidth: '1em', yPercent: 0, rotation: 0, opacity: 1, duration: 0.9, ease: 'back.out(2.5)' },
+          '<0.5',
+        )
+        .to(highlights, { yPercent: -6, duration: 0.4, stagger: 0.04, yoyo: true, repeat: 1, ease: 'power2.out' }, '<0.4')
+        .to({}, { duration: 0.8 })
+    })
+  })
+}

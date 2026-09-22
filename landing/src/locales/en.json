@@ -126,6 +126,20 @@
       }
     ]
   },
+  "motto": {
+    "label": "Believe in yourself. Be you!",
+    "lines": [
+      [
+        { "text": "BE", "tone": "highlight" },
+        { "text": "LIEVE IN", "tone": "dim" }
+      ],
+      [
+        { "text": "YOU", "tone": "highlight" },
+        { "text": "!", "tone": "accent" },
+        { "text": "RSELF", "tone": "dim" }
+      ]
+    ]
+  },
   "education": {
     "title": "ACADEMIC PATH",
     "entries": [

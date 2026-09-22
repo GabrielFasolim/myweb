@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { BRACKET_CLOSE, BRACKET_OPEN, formatIndex } from './animations/constants'
 import {
   useHorizontalScroll,
+  useMottoAnimation,
   useRevealBatch,
   useScrollProgress,
   useVelocitySkew,
@@ -543,6 +544,52 @@ function Education() {
   )
 }
 
+/* ── Motto — "BELIEVE IN YOURSELF" → "BE YOU!" ── */
+const MOTTO_TONE_CLASSES = {
+  highlight: 'motto__char',
+  dim: 'motto__char motto__char--dim',
+}
+
+const toVisibleChar = (char) => char.replace(' ', ' ')
+
+function MottoSegment({ text, tone }) {
+  if (tone === 'accent') {
+    return (
+      <span data-motto-bang className="motto__bang">
+        {text}
+      </span>
+    )
+  }
+
+  return text.split('').map((char, i) => (
+    <span key={i} data-motto-char={tone} className={MOTTO_TONE_CLASSES[tone]}>
+      {toVisibleChar(char)}
+    </span>
+  ))
+}
+
+function Motto() {
+  const { t } = useTranslation()
+  const lines = t('motto.lines', { returnObjects: true })
+  const sectionRef = useRef(null)
+  useMottoAnimation(sectionRef)
+
+  return (
+    <section ref={sectionRef} className="motto">
+      <h2 className="sr-only">{t('motto.label')}</h2>
+      <p aria-hidden="true" className="motto__phrase font-headline">
+        {lines.map((segments, i) => (
+          <span key={i} className="motto__line">
+            {segments.map(({ text, tone }, j) => (
+              <MottoSegment key={j} text={text} tone={tone} />
+            ))}
+          </span>
+        ))}
+      </p>
+    </section>
+  )
+}
+
 /* ── Footer ── */
 function Footer() {
   const { t } = useTranslation()
@@ -599,6 +646,7 @@ export default function App() {
       <Editorial />
       <Skills />
       <Education />
+      <Motto />
       <Footer />
     </div>
   )

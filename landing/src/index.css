@@ -296,6 +296,47 @@ html {
   max-width: 28rem;
 }
 
+.motto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 0 6vw;
+  background: #050505;
+}
+
+.motto__phrase {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(3.5rem, 13vw, 14rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--motion-ink);
+}
+
+.motto__line {
+  display: flex;
+  overflow: hidden;
+  padding-block: 0.04em;
+}
+
+.motto__char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.motto__char--dim {
+  opacity: 0.12;
+}
+
+.motto__bang {
+  display: inline-block;
+  max-width: 1em;
+  will-change: transform, opacity;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .h-scroll {
     height: auto;

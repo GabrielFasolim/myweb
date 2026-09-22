@@ -18,13 +18,14 @@ Camada de animacao da landing (GSAP + ScrollTrigger) inspirada na linguagem visu
 - `useScrollProgress` — barra branca de 2px no topo, scrub de `0` a `max`; usa `refreshPriority: -1` para ser recalculada depois do pin da Skills
 - `useVelocitySkew` — skew nas palavras da Editorial proporcional a velocidade do scroll (`[data-skew]`)
 - `useHorizontalScroll` — secao Editorial (FINTECH / BLOCKCHAIN / IoT) fixada (pin) e rolando para o lado, um painel por palavra com `{ 01 }` e descricao; itens `[data-h-reveal]` fora da tela entram via `containerAnimation`
+- `useMottoAnimation` — secao Motto ("BELIEVE IN YOURSELF" → "BE YOU!"): pin de 220% com scrub; letras entram uma a uma, letras `dim` apagam para 0.12, o `!` cai entre YOU e RSELF abrindo espaco (maxWidth 0 → 1em) e BE/YOU dao um pulo; texto em `motto.lines` nos locales com `tone` highlight | dim | accent; estado final e o CSS padrao (reduced motion ve "BE YOU!" direto)
 - `useRevealBatch` — reveal `y: 40, opacity: 0 -> 1` (power4.out, 1.2s, stagger) para `[data-reveal]` (Education)
 
 ## Comportamentos Esperados
 - Todas as animacoes rodam apenas com `prefers-reduced-motion: no-preference`; com reduce, Skills vira lista vertical e nada e animado
 - Sem cores: somente branco, cinzas e `#050505`
 - Sem overflow horizontal da pagina (inclusive mobile)
-- Ordem da pagina: Hero, Stats, Flow (Achievements, WhyMe, Experience `#work`), Editorial (horizontal), Skills, Education, Footer
+- Ordem da pagina: Hero, Stats, Flow (Achievements, WhyMe, Experience `#work`), Editorial (horizontal), Skills, Education, Motto, Footer
 - Editorial e uma secao independente, fora do Flow — nao pode ficar dentro de um FlowSection (pin aninhado com pai `flex` e transformado quebra o fluxo)
 - Skills voltou ao grid original
 - Hero permanece com a animacao original (CSS), sem camada GSAP
@@ -37,3 +38,4 @@ Camada de animacao da landing (GSAP + ScrollTrigger) inspirada na linguagem visu
 - 2026-09-22 — Scroll horizontal movido de Skills para Editorial; Editorial saiu do FlowArt para corrigir salto apos o ultimo painel
 - 2026-09-22 — Removida a linha de progresso da secao Editorial
 - 2026-09-22 — Reordenacao: Achievements logo apos Stats, WhyMe antes de Experience, Editorial apos o Flow; removido `anticipatePin`
+- 2026-09-22 — Adicionada secao Motto "BELIEVE IN YOURSELF / BE YOU!" antes do Footer; ScrollTrigger unificado em `animations/gsap.js` (story-scroll tambem)
