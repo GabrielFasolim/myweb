@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 
-gsap.registerPlugin(ScrollTrigger)
+import { gsap, ScrollTrigger, useGSAP } from '../../animations/gsap'
 
 function cx(...parts) {
   return parts.filter(Boolean).join(' ')
